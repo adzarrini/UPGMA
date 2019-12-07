@@ -19,6 +19,8 @@ int n;
 vector<vector<double> > C;
 vector<string> tree;
 
+const char start = 'A';
+
 int main(int argc, char* argv[]) {
 
 	if (argc != 3 && argc != 5)
@@ -40,7 +42,7 @@ int main(int argc, char* argv[]) {
 		generateCluster(n, max, seed);
 	}
     
-    print2dVector(C);
+    //print2dVector(C);
     buildTree();
     printTree();
 
@@ -61,11 +63,11 @@ void readClusters(string filename) {
         vector<double>(n));
     C = t;
 
-    tree.reserve(2*n-1);
+    tree.reserve(n);
 
 	for (int i = 0; i < n; i++) {
-        tree.push_back(getString((char) ('a'+i)));
-		for(int j = i + 1; j < n; j++) {
+        tree.push_back(getString((char) (start+i)));
+		for(int j = 0; j < i; j++) {
             fin >> C[i][j];
 			C[j][i] = C[i][j];
 		}
@@ -83,11 +85,11 @@ void generateCluster(int n, int max, int seed) {
     C = t;
 
     
-    tree.reserve(2*n-1);
+    tree.reserve(n);
 
 	for (int i = 0; i < n; i++) {
-        tree.push_back(getString((char) ('a'+i)));
-        for(int j = i + 1; j < n; j++) {
+        tree.push_back(getString((char) (start+i)));
+        for(int j = 0; j < i; j++) {
 			C[i][j] = double(rand()) / RAND_MAX * max;
 			C[j][i] = C[i][j];
 		}
@@ -132,10 +134,15 @@ void buildTree() {
 }
 
 void print2dVector(vector<vector<double> >& v) {
-    cout << v.size() << endl;
-	for (int i = 0; i < v.size(); i++) {
-		for(int j = 0; j < v[i].size(); j++) {
-			cout << fixed << setprecision(4) << v[i][j] << "\t";
+    cout << v.size() << "\t";
+    for (int i = 0; i < v.size(); i++) {
+        cout << (char) (start + i) << "\t";
+    }
+    cout << endl;
+    for (int i = 0; i < v.size(); i++) {
+		cout << (char) (start + i) << "\t";
+        for(int j = 0; j < v[i].size(); j++) {
+			cout << setprecision(4) << v[i][j] << "\t";
 		}
 		cout << endl;
 	}

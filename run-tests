@@ -1,0 +1,34 @@
+#/bin/bash
+
+echo "Running UPGMA tests"
+
+make
+
+mkdir input
+mkdir output
+
+echo ""
+
+for i in {1..10}
+do
+	t="input/test-${i}.txt"
+	o="output/out-${i}.txt"
+	
+	n=$(( (RANDOM % 20) + 1))
+	max=20
+	seed=$RANDOM
+
+	`./gen-dm $t $r $n $max $seed`
+	`./upgma -f $t > $o`
+
+	echo "Running test ${i}: manually verify output"
+	echo ""
+	python verify.py "$t" "$o"
+	echo ""
+done
+
+make clean
+
+rm -r input
+rm -r output
+
